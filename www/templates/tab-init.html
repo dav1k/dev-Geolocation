@@ -1,0 +1,24 @@
+<ion-view view-title="Initialize">
+  <div class="bar bar-header bar-positive">
+    <ht class="title">Initialize GPS Module</ht>
+  </div>
+  <ion-content class="padding has-header has-subfooter">
+    <ion-list>
+      <ion-item ng-repeat="data in log" style="font-size: small;">
+        Number: {{data.number}} @ {{data.time}} <br>
+        Location: {{data.position.latitude}}, {{data.position.longitude}}
+      </ion-item>
+    </ion-list>
+  </ion-content>
+  <ion-footer-bar>
+    <!-- Button/Start GPS -->
+    <button class="button button-balanced" ng-click="beginTracking()" ng-disabled="disableStartButton">
+      Start GPS Logging
+    </button>
+
+    <!-- Button/End GPS -->
+    <button class="button button-assertive" ng-click="stopTracking()">
+      End GPS Logging
+    </button>
+  </ion-footer-bar>
+</ion-view>

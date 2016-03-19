@@ -1,0 +1,23 @@
+<ion-view view-title="Data Query">
+  <div class="bar bar-header bar-calm">
+    <button class="button button-icon icon ion-ios-minus-outline" ng-click="showDelete = !showDelete"></button>
+    <h1 class="title">Data Query</h1>
+  </div>
+  <ion-content class="padding has-header">
+    <ion-list can-swipe="true" show-delete="showDelete">
+      <ion-item ng-repeat="location in queryResults" class="item-remove-animate" style="font-size: small;">
+        Key: {{location.key}} <br>
+        Location: {{location.location[0]}}, {{location.location[1]}}
+
+        <!-- Toggled Delete Button -->
+        <ion-delete-button class="ion-minus-circled" ng-click="deleteEntry(location)"></ion-delete-button>
+
+        <!-- Swiped Delete Button -->
+        <ion-option-button class="button-assertive ion-minus-circled" ng-click="deleteEntry(location)"></ion-option-button>
+      </ion-item>
+    </ion-list>
+    <button class="button button-block button-energized" ng-click="resetData()" ng-disabled="disableResetButton">
+      Reset GPS Data
+    </button>
+  </ion-content>
+</ion-view>
