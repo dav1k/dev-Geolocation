@@ -4,10 +4,15 @@
     <h1 class="title">Data Query</h1>
   </div>
   <ion-content class="padding has-header">
+    <ion-refresher pulling-text="Pull to Refresh ..." on-refresh="doRefresh()"></ion-refresher>
     <ion-list can-swipe="false" show-delete="showDelete">
       <ion-item ng-repeat="location in objectsInQuery" class="item-remove-animate" style="font-size: small;">
-        Key: {{location.key}} <br>
-        Location: {{location.location[0]}}, {{location.location[1]}}
+        Key:
+        {{location.$id}}
+        <br>
+        Location:
+        {{location.l[0]}},
+        {{location.l[1]}}
 
         <!-- Toggled Delete Button -->
         <ion-delete-button class="ion-minus-circled" ng-click="deleteEntry(location)"></ion-delete-button>

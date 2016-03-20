@@ -1,12 +1,15 @@
 <ion-view view-title="Initialize">
-  <div class="bar bar-header bar-positive">
-    <ht class="title">Initialize GPS Module</ht>
+  <div class="bar bar-header bar-calm">
+    <h1 class="title">Initialize GPS Module</h1>
+    <div class="button" ng-hide="hideResetButton">
+      <button class="button button-assertive" ng-click="resetData()">Reset</button>
+    </div>
   </div>
   <ion-content class="padding has-header has-subfooter">
     <ion-list>
       <ion-item ng-repeat="data in log" style="font-size: small;">
-        Number: {{data.number}} @ {{data.time}} <br>
-        Location: {{data.position.latitude}}, {{data.position.longitude}}
+        Number: {{data.$id}} <br>
+        Location: {{data.l[0]}}, {{data.l[1]}}
       </ion-item>
     </ion-list>
   </ion-content>

@@ -1,11 +1,13 @@
 var app = angular.module('geoFireServices', []);
 
-app.factory('geoFireServices', function($q, $rootScope, $firebase, firebaseURL, locationServices) {
+app.factory('geoFireServices', function($q, $rootScope, $firebase, $firebaseArray, firebaseURL, locationServices) {
 
   console.log("geoFireServices Loaded.");
 
   // Init Firebase & Geofire
-  var geoFire = new GeoFire(new Firebase(firebaseURL));
+  var firebaseRef = new Firebase(firebaseURL);
+  var geoFire = new GeoFire(firebaseRef);
+  var objectsInQuery = $firebaseArray(firebaseRef);
 
   var currentLocation = [37.785326, -122.405696];
   var geoQuery = geoFire.query({
@@ -63,5 +65,7 @@ app.factory('geoFireServices', function($q, $rootScope, $firebase, firebaseURL, 
         radius: radius
       });
     },
+
+    objectsInQuery: objectsInQuery,
   };
 });
