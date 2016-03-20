@@ -6,7 +6,6 @@ app.factory('geoFireServices', function($q, $rootScope, $firebase, firebaseURL, 
 
   // Init Firebase & Geofire
   var geoFire = new GeoFire(new Firebase(firebaseURL));
-  var objectsInQuery = [];
 
   var currentLocation = [37.785326, -122.405696];
   var geoQuery = geoFire.query({
@@ -14,37 +13,18 @@ app.factory('geoFireServices', function($q, $rootScope, $firebase, firebaseURL, 
     radius: 20
   });
 
-
-
   // Query Callbacks
   var onReadyRegistration = geoQuery.on("ready", function() {
-    // console.log("GeoQuery has loaded and fired all other events for inital data.");
+    $rootScope.$broadcast("GEOQUERY:READY");
   });
-
   var onKeyEnteredRegistration = geoQuery.on("key_entered", function(key, location, distance) {
-    console.log(key + " entered query at " + location + " (" + distance + " km from center)");
-
-    objectsInQuery.push({
-      'key': key,
-      'location': location,
-      'distance': distance
-    });
-
-    // Broadcast to app
-    $rootScope.$broadcast("GEOQUERY:KEY_ENTERED");
+    $rootScope.$broadcast("GEOQUERY:KEY_ENTERED", key, location, distance);
   });
-
-
   var onKeyExitedRegistration = geoQuery.on("key_exited", function(key, location, distance) {
-    console.log(key + " exited query at " + location + " (" + distance + " km from center)");
-
-    $rootScope.$broadcast("GEOQUERY:KEY_EXITED");
+    $rootScope.$broadcast("GEOQUERY:KEY_EXITED", key, location, distance);
   });
-
-  var onKeyMovedRegistration = geoQuery.on("key_moved", function (key, location, distance) {
-    console.log(key + " moved within query to " + location + " (" + distance + " km from center)");
-
-    $rootScope.$broadcast("GEOQUERY:KEY_MOVED");
+  var onKeyMovedRegistration = geoQuery.on("key_moved", function(key, location, distance) {
+    $rootScope.$broadcast("GEOQUERY:KEY_MOVED", key, location, distance);
   });
 
   // Grab Current Location
@@ -61,8 +41,6 @@ app.factory('geoFireServices', function($q, $rootScope, $firebase, firebaseURL, 
   // Service Hooks & Data
   return {
     uploadLocation: function(key, location) {
-      console.log("Upload: ", location);
-
       geoFire.set(key, [location.latitude, location.longitude])
         .then(function() {
           console.log("Upload successful.");
@@ -79,11 +57,11 @@ app.factory('geoFireServices', function($q, $rootScope, $firebase, firebaseURL, 
       });
     },
 
-    updateQuery: function() {
-      return objectsInQuery;
+    updateQuery: function(center, radius) {
+      geoQuery.updateCriteria({
+        center: [center.latitude, center.longitude],
+        radius: radius
+      });
     },
-
-    queryData: objectsInQuery
-
   };
 });
