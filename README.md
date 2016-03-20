@@ -1,25 +1,17 @@
-Ionic App Base
-=====================
+dev-Geolocation
+================
+This is a developmental mobile app to help design a Geolocation system that works to provide GPS tracking via mobile devices (with user permissions of course!) and to take the resulting data and upload it to a database for other parts of the app to utilize; especially to query quick with said data.
 
-A starting project for Ionic that optionally supports using custom SCSS.
+The app is built using AngularJS, ngCordova, Cordova's Geolocation plugin and the Ionic mobile framework. The backend is using Firebase & GeoFire BaaS.
 
-## Using this project
-
-We recommend using the [Ionic CLI](https://github.com/driftyco/ionic-cli) to create new Ionic projects that are based on this project but use a ready-made starter template.
-
-For example, to start a new Ionic project with the default tabs interface, make sure the `ionic` utility is installed:
+## Command Line Installations
+A log of the commands to startup this project.
 
 ```bash
-$ npm install -g ionic
+$ ionic start <projectName> <templateName>
+$ ionic setup sass
+$ ionic plugin add cordova-plugin-geolocation
+$ bower install ngCordova
+$ bower install firebase
+$ bower install geofire
 ```
-
-Then run:
-
-```bash
-$ ionic start myProject tabs
-```
-
-More info on this can be found on the Ionic [Getting Started](http://ionicframework.com/getting-started) page and the [Ionic CLI](https://github.com/driftyco/ionic-cli) repo.
-
-## Issues
-Issues have been disabled on this repo, if you do find an issue or have a question consider posting it on the [Ionic Forum](http://forum.ionicframework.com/).  Or else if there is truly an error, follow our guidelines for [submitting an issue](http://ionicframework.com/submit-issue/) to the main Ionic repository.
