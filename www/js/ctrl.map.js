@@ -12,6 +12,7 @@ app.controller('MapCtrl', function($scope, $q, $interval, $filter, $timeout, fir
   var firebaseRef = new Firebase(firebaseURL);
   var geoFire = new GeoFire(firebaseRef);
   var objectsInQuery = {};
+  var drawQueryRange;
 
   var geoQuery = geoFire.query({
     center: currentLocation,
@@ -26,18 +27,11 @@ app.controller('MapCtrl', function($scope, $q, $interval, $filter, $timeout, fir
       radius: radius
     });
 
-    // Color Range
-    var circle = new google.maps.Circle({
-      strokeColor: "#0185ff",
-      strokeOpacity: 0.7,
-      strokeWeight: 1,
-      fillColor: "#00e0ff",
-      fillOpacity: 0.05,
-      map: map,
-      center: new google.maps.LatLng(center[0], center[1]),
-      radius: ((radius) * 1000), // change Units m:KM
-      draggable: false
-    });
+    // Adjust Query Drawn Range
+    drawQueryRange.setCenter(new google.maps.LatLng({
+      lat: center[0],
+      lng: center[1]
+    }));
   };
 
   // Upon Keys inside Query Range
@@ -56,7 +50,7 @@ app.controller('MapCtrl', function($scope, $q, $interval, $filter, $timeout, fir
   });
 
   // Upon Keys leaving/exiting Query Range
-  geoQuery.on("key_exited", function (key, location, distance) {
+  geoQuery.on("key_exited", function(key, location, distance) {
     var object = objectsInQuery[key];
 
     // Remove Marker
@@ -82,6 +76,25 @@ app.controller('MapCtrl', function($scope, $q, $interval, $filter, $timeout, fir
       center: mapCenter,
       zoom: 15,
       mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    // Color Range
+    drawQueryRange = new google.maps.Circle({
+      strokeColor: "#0185ff",
+      strokeOpacity: 0.7,
+      strokeWeight: 1,
+      fillColor: "#00e0ff",
+      fillOpacity: 0.05,
+      map: map,
+      center: mapCenter,
+      radius: ((radius) * 1000), // change Units m:KM
+      draggable: false
+    });
+
+    map.addListener('dragend', function() {
+      center = [map.getCenter().lat(), map.getCenter().lng()];
+      console.log("Center dragged to new position.", center);
+      updateCriteria(center, radius);
     });
   };
 
