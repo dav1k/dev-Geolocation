@@ -49,6 +49,11 @@ app.controller('MapCtrl', function($scope, $q, $interval, $filter, $timeout, fir
     object.marker = drawMarker(object);
   });
 
+  // Upon Keys moving within query range
+  geoQuery.on("key_moved", function (key, location, distance) {
+    console.log("Object moved: ", key);
+  });
+
   // Upon Keys leaving/exiting Query Range
   geoQuery.on("key_exited", function(key, location, distance) {
     var object = objectsInQuery[key];
@@ -91,10 +96,17 @@ app.controller('MapCtrl', function($scope, $q, $interval, $filter, $timeout, fir
       draggable: false
     });
 
+    // Listener for dragend (to have all stuff re-center accordingly)
     map.addListener('dragend', function() {
       center = [map.getCenter().lat(), map.getCenter().lng()];
       console.log("Center dragged to new position.", center);
       updateCriteria(center, radius);
+    });
+
+    // Listener for zoom change
+    map.addListener('zoom_changed', function () {
+      zoom = map.getZoom();
+      console.log("Map's zoom updated: ", zoom);
     });
   };
 
