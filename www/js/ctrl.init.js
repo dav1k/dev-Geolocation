@@ -1,6 +1,6 @@
 var app = angular.module('InitCtrl', []);
 
-app.controller('InitCtrl', function($scope, $interval, $filter, locationServices) {
+app.controller('InitCtrl', function($scope, $interval, $filter, locationServices, geoFireServices) {
   console.log("InitCtrl Loaded.");
 
   $scope.log = [];
@@ -20,21 +20,23 @@ app.controller('InitCtrl', function($scope, $interval, $filter, locationServices
       // Determine Location
       locationServices.getCurrentPosition()
         .then(function(position) {
-          $scope.log.push({
+          var data = {
             'number': counter,
             'time': $filter('date')(new Date(), 'HH:mm:ss'),
             'position': {
               'latitude': position.coords.latitude,
               'longitude': position.coords.longitude
             }
-          });
+          };
+
+          $scope.log.push(data);
 
           // Upload to GeoFire
           geoFireServices.uploadLocation('Tick' + counter, {
             'latitude': data.position.latitude,
             'longitude': data.position.longitude
           });
-        }, function (error) {
+        }, function(error) {
           console.error("Location Error");
           console.error("Error: " + error);
         });
@@ -42,5 +44,15 @@ app.controller('InitCtrl', function($scope, $interval, $filter, locationServices
       // Incrementer
       counter++;
     }, 1000 * 5); // 5 second intervals
+  };
+
+  // Button: Stop GPS
+  $scope.stopTracking = function () {
+    console.log("Tracking Stopped.");
+
+    if (angular.isDefined($scope.heartbeat)) {
+      $interval.cancel($scope.heartbeat);
+      $scope.disableStartButton = false;
+    }
   };
 });
