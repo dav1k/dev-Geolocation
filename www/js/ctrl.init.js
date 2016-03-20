@@ -8,10 +8,8 @@ app.controller('InitCtrl', function($scope, $interval, $filter, locationServices
 
   // Init Button States
   $scope.disableStartButton = false;
-  $scope.hideResetButton = true;
-  if ($scope.log.length >= 1) {
-    $scope.hideResetButton = false;
-  }
+  $scope.hideResetButton = false;
+
 
   // Button: Start GPS
   $scope.beginTracking = function() {

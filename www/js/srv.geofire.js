@@ -9,36 +9,36 @@ app.factory('geoFireServices', function($q, $rootScope, $firebase, $firebaseArra
   var geoFire = new GeoFire(firebaseRef);
   var objectsInQuery = $firebaseArray(firebaseRef);
 
-  var currentLocation = [37.785326, -122.405696];
-  var geoQuery = geoFire.query({
-    center: currentLocation,
-    radius: 20
-  });
-
-  // Query Callbacks
-  var onReadyRegistration = geoQuery.on("ready", function() {
-    $rootScope.$broadcast("GEOQUERY:READY");
-  });
-  var onKeyEnteredRegistration = geoQuery.on("key_entered", function(key, location, distance) {
-    $rootScope.$broadcast("GEOQUERY:KEY_ENTERED", key, location, distance);
-  });
-  var onKeyExitedRegistration = geoQuery.on("key_exited", function(key, location, distance) {
-    $rootScope.$broadcast("GEOQUERY:KEY_EXITED", key, location, distance);
-  });
-  var onKeyMovedRegistration = geoQuery.on("key_moved", function(key, location, distance) {
-    $rootScope.$broadcast("GEOQUERY:KEY_MOVED", key, location, distance);
-  });
-
-  // Grab Current Location
-  locationServices.getCurrentPosition().then(function(position) {
-    currentLocation = position;
-
-    console.log("Current Location updated.");
-    geoQuery.updateCriteria({
-      center: [position.coords.latitude, position.coords.longitude],
-      radius: 20
-    });
-  });
+  // var currentLocation = [37.785326, -122.405696];
+  // var geoQuery = geoFire.query({
+  //   center: currentLocation,
+  //   radius: 20
+  // });
+  //
+  // // Query Callbacks
+  // var onReadyRegistration = geoQuery.on("ready", function() {
+  //   $rootScope.$broadcast("GEOQUERY:READY");
+  // });
+  // var onKeyEnteredRegistration = geoQuery.on("key_entered", function(key, location, distance) {
+  //   $rootScope.$broadcast("GEOQUERY:KEY_ENTERED", key, location, distance);
+  // });
+  // var onKeyExitedRegistration = geoQuery.on("key_exited", function(key, location, distance) {
+  //   $rootScope.$broadcast("GEOQUERY:KEY_EXITED", key, location, distance);
+  // });
+  // var onKeyMovedRegistration = geoQuery.on("key_moved", function(key, location, distance) {
+  //   $rootScope.$broadcast("GEOQUERY:KEY_MOVED", key, location, distance);
+  // });
+  //
+  // // Grab Current Location
+  // locationServices.getCurrentPosition().then(function(position) {
+  //   currentLocation = position;
+  //
+  //   console.log("Current Location updated.");
+  //   geoQuery.updateCriteria({
+  //     center: [position.coords.latitude, position.coords.longitude],
+  //     radius: 20
+  //   });
+  // });
 
   // Service Hooks & Data
   return {
