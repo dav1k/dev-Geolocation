@@ -28,7 +28,7 @@ app.factory('locationServices', function($q, $timeout) {
 
         }, function() {
           deferred.reject();
-        });
+        }, {enableHighAccuracy: true});
         return deferred.promise;
       }
       return $q.when(currentPositionCache);

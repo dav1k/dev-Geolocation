@@ -34,7 +34,7 @@ app.controller('InitCtrl', function($scope, $interval, $filter, locationServices
           };
 
           // Upload to GeoFire
-          geoFireServices.uploadLocation('Tick' + counter, {
+          geoFireServices.uploadLocation(('00000'+counter).substr(-5,5), {
             'latitude': data.position.latitude,
             'longitude': data.position.longitude
           });
@@ -53,6 +53,12 @@ app.controller('InitCtrl', function($scope, $interval, $filter, locationServices
       // Incrementer
       counter++;
     }, 1000 * 5); // 5 second intervals
+  };
+
+  $scope.listOrdered = function () {
+    angular.forEach($scope.log, function (data) {
+      data.id = parseFloat(data.id);
+    });
   };
 
   // Button: Stop GPS
